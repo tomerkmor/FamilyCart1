@@ -5,6 +5,7 @@ import { ThemeContext } from "../App";
 import ThemedView from "../Components/ThemedView";
 import ThemedText from "../Components/ThemedText";
 import AddItemButton from "../UI/AddItemButton";
+import ProductsList from "../Components/ProductsList";
 
 function HomeScreen() {
   const { theme } = useContext(ThemeContext);
@@ -13,11 +14,10 @@ function HomeScreen() {
   return (
     <ThemedView>
       <ThemedText>
-        <Text>dsa</Text>
-        <Text>dsa</Text>
-        <Text>dsa</Text>
-
-        <AddItemButton />
+        <View>
+          <ProductsList />
+          <AddItemButton />
+        </View>
       </ThemedText>
     </ThemedView>
   );

@@ -121,8 +121,10 @@ function AppOverviewTabs() {
 
 export default function App() {
   //const { theme, toggleTheme, themeName } = useContext(ThemeContext);
+  //style={theme.statusBarStyle}
   return (
     <>
+      <StatusBar />
       <ThemeProvider>
         <NavigationContainer>
           <Stack.Navigator>
