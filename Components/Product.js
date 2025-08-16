@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, Button, Pressable, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ThemedText from "./ThemedText";
 import ThemedView from "./ThemedView";
@@ -7,25 +7,31 @@ import { ThemeContext } from "../App";
 
 function Product({ productData }) {
   const { theme } = useContext(ThemeContext);
-  if (!productData) return null;
+  if (!productData) return <Text>There's no data.</Text>;
+
+  console.log(productData);
   return (
-    <View style={[{ backgroundColor: theme.headerBackground }]}>
-      <Ionicons name="bookmarks-outline" color={"green"} size={18} />
-      <View style={styles.username}>
-        <ThemedText>{productData.username}1</ThemedText>
-      </View>
-      <View style={styles.productContainer}>
-        <View>
-          <ThemedText style={styles.quantity}>
-            {productData.quantity}1
-          </ThemedText>
-          <ThemedText style={styles.product}>{productData.product}1</ThemedText>
+    <Pressable>
+      <View
+        style={[styles.container, { backgroundColor: theme.headerBackground }]}
+      >
+        <View style={styles.username}>
+          <ThemedText>{productData.username}</ThemedText>
         </View>
-        <ThemedText style={styles.date}>
-          {productData.date.toLocaleDateString()}1
-        </ThemedText>
+
+        <View style={styles.centerContainer}>
+          <ThemedText style={styles.product}>
+            {productData.product} - {productData.quantity}
+          </ThemedText>
+
+          <ThemedText style={styles.date}>
+            {productData.date.toLocaleDateString()}
+          </ThemedText>
+        </View>
+
+        <Button title="--V--" />
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -33,19 +39,25 @@ export default Product;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 4,
     flexDirection: "row",
-    flex: 1,
-    marginVertical: 4,
+    marginVertical: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 16,
+    width: "80%",
+    alignSelf: "center",
   },
   username: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  centerContainer: {
     flex: 1,
   },
   productContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: "row",
   },
   quantity: {
     flex: 1,

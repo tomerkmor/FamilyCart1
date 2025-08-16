@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+    marginHorizontal: 30,
   },
   text: { fontSize: 24, marginBottom: 20 },
 });
