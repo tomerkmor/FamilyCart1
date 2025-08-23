@@ -1,20 +1,31 @@
 import React, { useContext } from "react";
 import { View, Text, Switch, StyleSheet } from "react-native";
 import { ThemeContext } from "../App";
+import { Picker } from "@react-native-picker/picker";
 import ThemedText from "./ThemedText";
+import { Themes } from "../constants/styles";
 
 function Header() {
-  const { theme, toggleTheme, themeName } = useContext(ThemeContext);
+  const { theme, setTheme, themeName } = useContext(ThemeContext);
 
   return (
     <View style={styles.container}>
-      <ThemedText>Current theme: {themeName}</ThemedText>
-      <Switch
-        value={themeName === "dark"}
-        onValueChange={toggleTheme}
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={themeName === "dark" ? "#f5dd4b" : "#f4f3f4"}
-      />
+      <ThemedText>Current theme:</ThemedText>
+
+      <Picker
+        selectedValue={themeName}
+        style={[
+          styles.picker,
+          { backgroundColor: theme.headerBackground, color: theme.text },
+        ]}
+        onValueChange={(value) => setTheme(value)}
+        dropdownIconColor="#000"
+        mode="dropdown"
+      >
+        {Object.keys(Themes).map((key) => (
+          <Picker.Item key={key} label={key} value={key} />
+        ))}
+      </Picker>
     </View>
   );
 }
@@ -23,11 +34,16 @@ export default Header;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
     marginHorizontal: 30,
+  },
+  picker: {
+    width: 200,
+    marginTop: 10,
+    paddingHorizontal: 16,
+    borderRadius: 16,
   },
   text: { fontSize: 24, marginBottom: 20 },
 });

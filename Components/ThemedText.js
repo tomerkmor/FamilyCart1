@@ -16,5 +16,6 @@ export default ThemedText;
 const styles = StyleSheet.create({
   container: {
     fontSize: 18,
+    textAlign: "right",
   },
 });

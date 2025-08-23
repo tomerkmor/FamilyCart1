@@ -5,7 +5,7 @@ import { ThemeContext } from "../App";
 
 import ThemedView from "../Components/ThemedView";
 import ThemedText from "../Components/ThemedText";
-import AddItemButton from "../UI/AddItemButton";
+import AddItemButton from "../Components/UI/AddItemButton";
 import ProductsList from "../Components/ProductsList";
 import HomeHeader from "../Components/HomeHeader";
 
@@ -18,6 +18,7 @@ const DUMMY_DATA = [
     quantity: "5",
     description: "description 1...",
     category: "Food",
+    emergency: "1",
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ const DUMMY_DATA = [
     quantity: "3",
     description: "description 2...",
     category: "Clothes",
+    emergency: "1",
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ const DUMMY_DATA = [
     quantity: "7",
     description: "description 3...",
     category: "Food",
+    emergency: "1",
   },
   {
     id: 4,
@@ -45,6 +48,7 @@ const DUMMY_DATA = [
     quantity: "2",
     description: "description 4...",
     category: "Clothes",
+    emergency: "1",
   },
   {
     id: 5,
@@ -54,6 +58,7 @@ const DUMMY_DATA = [
     quantity: "10",
     description: "description 5...",
     category: "Food",
+    emergency: "1",
   },
   {
     id: 6,
@@ -63,6 +68,7 @@ const DUMMY_DATA = [
     quantity: "1",
     description: "description 6...",
     category: "Clothes",
+    emergency: "1",
   },
   {
     id: 7,
@@ -72,6 +78,7 @@ const DUMMY_DATA = [
     quantity: "8",
     description: "description 7...",
     category: "Food",
+    emergency: "1",
   },
 ];
 

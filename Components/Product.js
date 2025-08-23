@@ -1,22 +1,31 @@
 import { Alert, Button, Pressable, StyleSheet, Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import ThemedText from "./ThemedText";
-import ThemedView from "./ThemedView";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
+import { useNavigation } from "@react-navigation/native";
+import ThemedText from "./ThemedText";
+import AddItemButton from "./CheckButton";
 
 function Product({ productData }) {
+  const navigation = useNavigation();
   const { theme } = useContext(ThemeContext);
+  console.log("test -", productData);
   if (!productData) return <Text>There's no data.</Text>;
 
-  console.log(productData);
+  const productPressHandler = () => {
+    navigation.navigate("ManageProduct", productData);
+  };
   return (
-    <Pressable>
+    <Pressable
+      onPress={productPressHandler}
+      style={({ pressed }) => pressed && styles.pressed}
+    >
       <View
         style={[styles.container, { backgroundColor: theme.headerBackground }]}
       >
-        <View style={styles.username}>
-          <ThemedText>{productData.username}</ThemedText>
+        <View style={styles.leftContainer}>
+          <ThemedText style={styles.username}>
+            {productData.username}
+          </ThemedText>
         </View>
 
         <View style={styles.centerContainer}>
@@ -29,7 +38,9 @@ function Product({ productData }) {
           </ThemedText>
         </View>
 
-        <Button title="--V--" />
+        <View style={styles.rightContainer}>
+          <AddItemButton />
+        </View>
       </View>
     </Pressable>
   );
@@ -38,22 +49,37 @@ function Product({ productData }) {
 export default Product;
 
 const styles = StyleSheet.create({
+  pressed: {
+    opacity: 0.75,
+  },
   container: {
-    flex: 4,
+    flex: 11,
     flexDirection: "row",
     marginVertical: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
     borderRadius: 16,
     width: "80%",
     alignSelf: "center",
   },
-  username: {
-    flex: 1,
+  leftContainer: {
+    flex: 2,
     justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 8,
+  },
+  username: {
+    fontStyle: "italic",
+    fontSize: 12,
   },
   centerContainer: {
-    flex: 1,
+    flex: 7,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    paddingVertical: 8,
+  },
+  rightContainer: {
+    flex: 2,
   },
   productContainer: {
     flex: 1,
@@ -64,8 +90,15 @@ const styles = StyleSheet.create({
   },
   product: {
     flex: 1,
+    fontWeight: "bold",
   },
   date: {
     flex: 1,
+    fontSize: 10,
+  },
+  button: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

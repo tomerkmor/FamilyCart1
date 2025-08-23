@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -11,39 +11,26 @@ import HomeScreen from "./Screens/HomeScreen";
 import RecipesScreen from "./Screens/RecipesScreen";
 import MyListScreen from "./Screens/MyListScreen";
 import SettingsScreen from "./Screens/SettingsScreen";
-import ManageExpense from "./Screens/ManageExpense";
+import ManageProduct from "./Components/ManageProduct";
 
-const themes = {
-  light: {
-    headerBackground: "#ffffff",
-    headerTintColor: "#222222",
-    background: "#f5f5f5", // soft neutral grey for app body
-    text: "#222222",
-    statusBarStyle: "dark",
-    tabBarActiveTintColor: "#007aff", // iOS blue
-    tabBarBackground: "#ffffff",
-  },
-  dark: {
-    headerBackground: "#1e1e1e",
-    headerTintColor: "#ffffff",
-    background: "#121212", // deep dark background
-    text: "#ffffff",
-    statusBarStyle: "light",
-    tabBarActiveTintColor: "#f7bc0c", // warm yellow highlight
-    tabBarBackground: "#1e1e1e",
-  },
-};
+import { Themes } from "./constants/styles";
+import IconButton from "./Components/UI/IconButton";
 
 export const ThemeContext = createContext();
 
 function ThemeProvider({ children }) {
   const [themeName, setThemeName] = useState("dark");
-  const toggleTheme = () =>
-    setThemeName(themeName === "dark" ? "light" : "dark");
-  const theme = themes[themeName];
+
+  const setThemeByName = (name) => {
+    setThemeName(name);
+  };
+
+  const theme = Themes[themeName];
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, themeName }}>
+    <ThemeContext.Provider
+      value={{ theme, setTheme: setThemeByName, themeName }}
+    >
       {children}
     </ThemeContext.Provider>
   );
@@ -56,6 +43,7 @@ const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 function AppOverviewTabs() {
+  const navigation = useNavigation();
   const { theme, toggleTheme, themeName } = useContext(ThemeContext);
   return (
     <BottomTabs.Navigator
@@ -79,6 +67,16 @@ function AppOverviewTabs() {
           tabBarLabel: "בית",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bookmarks-outline" color={color} size={size} />
+          ),
+          headerRight: () => (
+            <IconButton
+              icon="add"
+              color={theme.headerTintColor}
+              size={36}
+              onPress={() => {
+                navigation.navigate("ManageProduct");
+              }}
+            />
           ),
         }}
       />
@@ -120,11 +118,18 @@ function AppOverviewTabs() {
 }
 
 export default function App() {
-  //const { theme, toggleTheme, themeName } = useContext(ThemeContext);
-  //style={theme.statusBarStyle}
+  return (
+    <ThemeProvider>
+      <ThemedApp />
+    </ThemeProvider>
+  );
+}
+
+function ThemedApp() {
+  const { theme, toggleTheme, themeName } = useContext(ThemeContext);
   return (
     <>
-      <StatusBar />
+      <StatusBar style={theme.statusBarStyle} />
       <ThemeProvider>
         <NavigationContainer>
           <Stack.Navigator>
@@ -133,7 +138,13 @@ export default function App() {
               component={AppOverviewTabs}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="ManageExpense" component={ManageExpense} />
+            <Stack.Screen
+              name="ManageProduct"
+              component={ManageProduct}
+              options={{
+                presentation: "modal",
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
