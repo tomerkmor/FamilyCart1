@@ -15,6 +15,7 @@ import ManageProduct from "./Components/ManageProduct";
 
 import { Themes } from "./constants/styles";
 import IconButton from "./Components/UI/IconButton";
+import ProductsContextProvider from "./store/products-context";
 
 export const ThemeContext = createContext();
 
@@ -120,7 +121,9 @@ function AppOverviewTabs() {
 export default function App() {
   return (
     <ThemeProvider>
-      <ThemedApp />
+      <ProductsContextProvider>
+        <ThemedApp />
+      </ProductsContextProvider>
     </ThemeProvider>
   );
 }

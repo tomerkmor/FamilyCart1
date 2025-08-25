@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { ThemeContext } from "../App";
 
 import Button from "./UI/Button";
@@ -11,10 +11,9 @@ import ProductForm from "./ProductForm";
 import ProductFormButtons from "./ProductFormButtons";
 function ManageProduct({ route, navigation }) {
   const { theme } = useContext(ThemeContext);
-  const editedProductId = route.params?.id;
-  const isEditing = !!editedProductId;
-  const productData = route.params ?? {};
-  console.log(isEditing, "product id = ", editedProductId);
+  //const editedProductId = route.params?.id;
+  const [productData, setProductData] = useState(route.params ?? {});
+  const isEditing = !!productData?.id;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,8 +35,11 @@ function ManageProduct({ route, navigation }) {
     <ThemedView
       style={[styles.container, { backgroundColor: theme.headerBackground }]}
     >
-      {isEditing && <Text>hi</Text>}
-      <ProductForm isEditing={isEditing} productData={productData} />
+      <ProductForm
+        isEditing={isEditing}
+        productData={productData}
+        setProductData={setProductData}
+      />
       <ProductFormButtons isEditing={isEditing} productData={productData} />
     </ThemedView>
   );
@@ -47,7 +49,7 @@ export default ManageProduct;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 5,
     alignItems: "center",
     justifyContent: "center",
     padding: 24,

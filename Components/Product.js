@@ -8,8 +8,6 @@ import AddItemButton from "./CheckButton";
 function Product({ productData }) {
   const navigation = useNavigation();
   const { theme } = useContext(ThemeContext);
-  console.log("test -", productData);
-  if (!productData) return <Text>There's no data.</Text>;
 
   const productPressHandler = () => {
     navigation.navigate("ManageProduct", productData);
@@ -30,7 +28,7 @@ function Product({ productData }) {
 
         <View style={styles.centerContainer}>
           <ThemedText style={styles.product}>
-            {productData.product} - {productData.quantity}
+            {productData.product} {"->"} {productData.quantity}
           </ThemedText>
 
           <ThemedText style={styles.date}>
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 14,
     borderRadius: 16,
-    width: "80%",
+
     alignSelf: "center",
   },
   leftContainer: {

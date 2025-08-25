@@ -1,14 +1,24 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import Product from "./Product";
+import { useContext } from "react";
+import { ProductsContext } from "../store/products-context";
 
-function ProductsList({ productsList }) {
-  return (
-    <FlatList
-      data={productsList}
-      renderItem={({ item }) => <Product productData={item} />}
-      keyExtractor={(item) => item.id}
-    />
-  );
+function ProductsList() {
+  const productsCtx = useContext(ProductsContext);
+
+  let content = <Text style={styles.noDataText}>There's no data.</Text>;
+  if (productsCtx.products.length > 0) {
+    content = (
+      <FlatList
+        data={productsCtx.products}
+        renderItem={({ item }) => <Product productData={item} />}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  }
+
+  return content;
 }
 
 export default ProductsList;
@@ -19,5 +29,10 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingVertical: 8,
+  },
+  noDataText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
   },
 });

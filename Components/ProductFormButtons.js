@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 
@@ -8,26 +8,49 @@ import Button from "./UI/Button";
 import IconButton from "./UI/IconButton";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
+import { ProductsContext } from "../store/products-context";
 
-function ProductFormButtons({ isEditing, route }) {
+function ProductFormButtons({ isEditing, productData }) {
   const navigation = useNavigation();
   const { theme } = useContext(ThemeContext);
-  const [productData, setProductData] = useState({});
+  const productsCtx = useContext(ProductsContext);
+  //const [productData, setProductData] = useState({});
 
+  const validateData = () => {
+    const productNameIsValid = (productData.product || "").trim().length > 0;
+    const quantityIsValid =
+      !isNaN(productData.quantity) && Number(productData.quantity) > 0;
+    const emergencyIsValid = (productData.emergency || "").trim().length > 0;
+
+    if (!(productNameIsValid && quantityIsValid && emergencyIsValid)) {
+      Alert.alert("Some data is empty.", "Please fill everything.");
+      return 0;
+    }
+    return 1;
+  };
   const confirmProductHandler = () => {
-    navigation.navigate("HomePage");
-  };
-  const cancelProductHandler = () => {
-    navigation.navigate("HomePage");
-  };
-  const updateProductHandler = () => {
-    navigation.navigate("HomePage");
-  };
-  const deleteProductHandler = () => {
-    navigation.navigate("HomePage");
+    if (!validateData()) return;
+
+    productsCtx.addProduct(productData);
+    navigation.goBack();
   };
 
-  function clearProductData() {}
+  const cancelProductHandler = () => {
+    navigation.goBack();
+  };
+
+  const updateProductHandler = () => {
+    if (!validateData()) return;
+
+    productsCtx.updateProduct(productData);
+    navigation.goBack();
+  };
+
+  const deleteProductHandler = () => {
+    productsCtx.deleteProduct(productData);
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
@@ -86,7 +109,7 @@ const styles = StyleSheet.create({
   deleteContainer: {
     flex: 1,
     alignItems: "center",
-
+    marginTop: 20,
     borderTopWidth: 4,
   },
 });

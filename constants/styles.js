@@ -1,4 +1,15 @@
 export const Themes = {
+  royalBlue: {
+    headerBackground: "#a281f0", // primary200
+    headerTintColor: "#200364", // primary800
+    background: "#c6affc", // primary100
+    text: "#2d0689", // primary700
+    statusBarStyle: "dark",
+    tabBarActiveTintColor: "#3e04c3", // primary500
+    tabBarBackground: "#a281f0", // primary200
+    accent: "#f7bc0c", // accent500
+    error: "#9b095c", // error500
+  },
   mysticGlow: {
     headerBackground: "#a281f0", // primary200
     headerTintColor: "#200364", // primary800

@@ -1,61 +1,80 @@
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View, Platform } from "react-native";
 import ThemedText from "../ThemedText";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../App";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-function InputField({ type, title, content }) {
+function InputField({
+  type,
+  title,
+  content: initialContent,
+  field,
+  setProductData,
+  keyboardType,
+}) {
   const { theme } = useContext(ThemeContext);
-  const [date, setDate] = useState(new Date());
+  const [content, setContent] = useState(initialContent || "");
+  const [date, setDate] = useState(initialContent || new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-  let inputProps = {};
   let themeStyles = {
     backgroundColor: theme.headerBackground,
     color: theme.text,
   };
 
+  function inputChangedHandler(enteredValue) {
+    setProductData((prevInputValues) => ({
+      ...prevInputValues,
+      [field]: enteredValue,
+    }));
+  }
+
   let inputElement = null;
-  if (type === "number") {
-    inputElement = (
-      <TextInput
-        style={[styles.input, themeStyles]}
-        keyboardType="numeric"
-        value={content}
-      />
-    );
-  } else if (type === "textarea") {
+  if (type === "textarea") {
     inputElement = (
       <TextInput
         style={[styles.input, styles.textarea, themeStyles]}
         multiline
         numberOfLines={4}
         value={content}
+        onChangeText={inputChangedHandler}
       />
     );
   } else if (type === "date") {
     inputElement = (
       <View>
         <Button
-          title={date.toDateString()}
+          title={
+            date instanceof Date
+              ? date.toDateString()
+              : new Date(date).toDateString()
+          }
           onPress={() => setShowPicker(true)}
         />
         {showPicker && (
           <DateTimePicker
-            value={date}
+            value={date instanceof Date ? date : new Date(date)}
             mode="date"
             display={Platform.OS === "ios" ? "spinner" : "default"}
             onChange={(event, selectedDate) => {
               const currentDate = selectedDate || date;
               setShowPicker(Platform.OS === "ios");
               setDate(currentDate);
+              setProductData((prev) => ({ ...prev, [field]: currentDate }));
             }}
           />
         )}
       </View>
     );
   } else {
+    // default/number
     inputElement = (
-      <TextInput style={[styles.input, themeStyles]} value={content || ""} />
+      <TextInput
+        keyboardType={type === "number" ? "decimal-pad" : "default"}
+        style={[styles.input, themeStyles]}
+        value={content}
+        onChangeText={inputChangedHandler}
+      />
     );
   }
 

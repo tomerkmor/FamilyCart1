@@ -3,7 +3,8 @@
 
 // Pull the latest Project
 git pull
-
+git rebase --abort
+git reset --hard origin/main
 
 
 // Update the project from WORK
@@ -17,4 +18,3 @@ git add .
 git commit -m "Updated home changes"
 git push 
 
-//dasda

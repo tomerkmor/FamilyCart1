@@ -2,45 +2,60 @@ import { StyleSheet, View } from "react-native";
 import InputField from "./UI/InputField";
 import ThemedText from "./ThemedText";
 
-function ProductForm({ productData }) {
-  //console.log(productData);
-
+function ProductForm({ productData, setProductData }) {
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>המוצר שלך</ThemedText>
 
       <View style={styles.rowContainer}>
-        <InputField title="כמות" type="text" content={productData.quantity} />
+        <InputField
+          title="כמות"
+          type="number"
+          content={productData.quantity}
+          field="quantity"
+          setProductData={setProductData}
+        />
         <InputField
           title="שם הפריט"
           type="text"
           content={productData.product}
+          field="product"
+          setProductData={setProductData}
         />
       </View>
 
       <View style={styles.rowContainer}>
         <InputField
           title="רמת דחיפות"
-          type="text"
+          type="number"
           content={productData.emergency}
+          field="emergency"
+          setProductData={setProductData}
         />
-        <InputField title="תאריך" type="date" content={productData.date} />
+        <InputField
+          title="תאריך"
+          type="date"
+          content={productData.date}
+          field="date"
+          setProductData={setProductData}
+        />
       </View>
 
       <InputField
         title="פירוט"
         type="textarea"
         content={productData.description}
+        field="description"
+        setProductData={setProductData}
       />
     </View>
   );
 }
 
 export default ProductForm;
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 4,
     alignItems: "stretch",
     padding: 24,
     marginHorizontal: 32,
