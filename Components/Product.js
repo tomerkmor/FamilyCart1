@@ -28,7 +28,7 @@ function Product({ productData }) {
 
         <View style={styles.centerContainer}>
           <ThemedText style={styles.product}>
-            {productData.product} {"->"} {productData.quantity}
+            {productData.product.value} {"->"} {productData.quantity.value}
           </ThemedText>
 
           <ThemedText style={styles.date}>

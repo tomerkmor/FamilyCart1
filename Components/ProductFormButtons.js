@@ -10,24 +10,17 @@ import { useContext } from "react";
 import { ThemeContext } from "../App";
 import { ProductsContext } from "../store/products-context";
 
-function ProductFormButtons({ isEditing, productData }) {
+function ProductFormButtons({
+  isEditing,
+  productData,
+  setProductData,
+  validateData,
+}) {
   const navigation = useNavigation();
   const { theme } = useContext(ThemeContext);
   const productsCtx = useContext(ProductsContext);
   //const [productData, setProductData] = useState({});
 
-  const validateData = () => {
-    const productNameIsValid = (productData.product || "").trim().length > 0;
-    const quantityIsValid =
-      !isNaN(productData.quantity) && Number(productData.quantity) > 0;
-    const emergencyIsValid = (productData.emergency || "").trim().length > 0;
-
-    if (!(productNameIsValid && quantityIsValid && emergencyIsValid)) {
-      Alert.alert("Some data is empty.", "Please fill everything.");
-      return 0;
-    }
-    return 1;
-  };
   const confirmProductHandler = () => {
     if (!validateData()) return;
 

@@ -23,9 +23,15 @@ function InputField({
   };
 
   function inputChangedHandler(enteredValue) {
+    const required = content?.required ?? false;
+    const isValid = required ? enteredValue.trim().length > 0 : true;
+
+    const newContent = { value: enteredValue, required, isValid };
+    setContent(newContent);
+
     setProductData((prevInputValues) => ({
       ...prevInputValues,
-      [field]: enteredValue,
+      [field]: newContent,
     }));
   }
 
@@ -33,10 +39,15 @@ function InputField({
   if (type === "textarea") {
     inputElement = (
       <TextInput
-        style={[styles.input, styles.textarea, themeStyles]}
+        style={[
+          styles.input,
+          styles.textarea,
+          themeStyles,
+          content.isValid ? "" : styles.error,
+        ]}
         multiline
         numberOfLines={4}
-        value={content}
+        value={content.value}
         onChangeText={inputChangedHandler}
       />
     );
@@ -71,8 +82,8 @@ function InputField({
     inputElement = (
       <TextInput
         keyboardType={type === "number" ? "decimal-pad" : "default"}
-        style={[styles.input, themeStyles]}
-        value={content}
+        style={[styles.input, themeStyles, content.isValid ? "" : styles.error]}
+        value={content.value}
         onChangeText={inputChangedHandler}
       />
     );
@@ -102,5 +113,9 @@ const styles = StyleSheet.create({
   textarea: {
     minHeight: 150,
     textAlignVertical: "top",
+  },
+  error: {
+    borderColor: "red",
+    borderWidth: 2,
   },
 });

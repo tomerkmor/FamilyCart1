@@ -1,5 +1,9 @@
 // Daily workflow
+/*
 
+The height of the description is high, hence making the error message blend inside it! - FIX
+
+*/
 
 // Pull the latest Project
 git pull

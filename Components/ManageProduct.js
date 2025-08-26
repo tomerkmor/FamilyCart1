@@ -9,10 +9,25 @@ import InputField from "./UI/InputField";
 import IconButton from "./UI/IconButton";
 import ProductForm from "./ProductForm";
 import ProductFormButtons from "./ProductFormButtons";
+
+const STARTING_PRODUCT = {
+  // id - will be generated on submmition.
+  product: { value: "", required: true, isValid: true },
+  date: new Date(),
+  username: "TEST",
+  quantity: { value: "1", required: true, isValid: true },
+  description: { value: "", required: false, isValid: true },
+  category: { value: "", required: true, isValid: true },
+  emergency: { value: "1", required: true, isValid: true },
+};
+
 function ManageProduct({ route, navigation }) {
   const { theme } = useContext(ThemeContext);
   //const editedProductId = route.params?.id;
-  const [productData, setProductData] = useState(route.params ?? {});
+  const [productData, setProductData] = useState(
+    route.params ?? STARTING_PRODUCT
+  );
+  console.log(productData);
   const isEditing = !!productData?.id;
 
   useLayoutEffect(() => {
@@ -31,6 +46,42 @@ function ManageProduct({ route, navigation }) {
     });
   }, [navigation, isEditing]);
 
+  const validateData = () => {
+    const productNameIsValid =
+      (productData.product.value || "").trim().length > 0;
+
+    const quantityIsValid =
+      !isNaN(productData.quantity.value) &&
+      Number(productData.quantity.value) > 0;
+
+    const emergencyIsValid =
+      (productData.emergency.value || "").trim().length > 0;
+
+    if (!(productNameIsValid && quantityIsValid && emergencyIsValid)) {
+      //Alert.alert("Some data is empty.", "Please fill everything.");
+      setProductData((currentInputs) => {
+        console.log("ManageProduct: ", currentInputs);
+        return {
+          ...currentInputs,
+          product: {
+            ...currentInputs.product,
+            isValid: productNameIsValid,
+          },
+          quantity: {
+            ...currentInputs.quantity,
+            isValid: quantityIsValid,
+          },
+          emergency: {
+            ...currentInputs.emergency,
+            isValid: emergencyIsValid,
+          },
+        };
+      });
+      return false;
+    }
+    return true;
+  };
+
   return (
     <ThemedView
       style={[styles.container, { backgroundColor: theme.headerBackground }]}
@@ -39,8 +90,14 @@ function ManageProduct({ route, navigation }) {
         isEditing={isEditing}
         productData={productData}
         setProductData={setProductData}
+        validateData={validateData}
       />
-      <ProductFormButtons isEditing={isEditing} productData={productData} />
+      <ProductFormButtons
+        isEditing={isEditing}
+        productData={productData}
+        setProductData={setProductData}
+        validateData={validateData}
+      />
     </ThemedView>
   );
 }

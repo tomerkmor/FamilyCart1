@@ -1,8 +1,19 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import InputField from "./UI/InputField";
 import ThemedText from "./ThemedText";
+import { useEffect, useState } from "react";
 
-function ProductForm({ productData, setProductData }) {
+function ProductForm({ productData, setProductData, validateData }) {
+  const [formIsInvalid, setFormIsInvalid] = useState(false);
+  /*
+  useEffect(() => {
+    const invalid = Object.values(productData).some(
+      (field) =>
+        typeof field === "object" && field.required && field.isValid === false
+    );
+    setFormIsInvalid(invalid);
+  }, [productData]);
+*/
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>המוצר שלך</ThemedText>
@@ -28,7 +39,7 @@ function ProductForm({ productData, setProductData }) {
         <InputField
           title="רמת דחיפות"
           type="number"
-          content={productData.emergency}
+          content={productData.category}
           field="emergency"
           setProductData={setProductData}
         />
@@ -48,6 +59,12 @@ function ProductForm({ productData, setProductData }) {
         field="description"
         setProductData={setProductData}
       />
+
+      {formIsInvalid && (
+        <Text style={styles.errorMessage}>
+          Some data is missing - Please check your entered data!
+        </Text>
+      )}
     </View>
   );
 }
@@ -90,5 +107,10 @@ const styles = StyleSheet.create({
   button: {
     minWidth: 120,
     marginHorizontal: 8,
+  },
+  errorMessage: {
+    color: "red",
+    textAlign: "center",
+    margin: 8,
   },
 });
