@@ -37,10 +37,10 @@ function ProductForm({ productData, setProductData, validateData }) {
 
       <View style={styles.rowContainer}>
         <InputField
-          title="רמת דחיפות"
-          type="number"
+          title="קטגוריה"
+          type="text"
           content={productData.category}
-          field="emergency"
+          field="category"
           setProductData={setProductData}
         />
         <InputField

@@ -3,21 +3,38 @@ import Product from "./Product";
 import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../store/products-context";
 import { fetchProducts } from "../util/http";
+import LoadingOverlay from "./UI/LoadingOverlay";
+import ErrorOverlay from "./UI/ErrorOverlay";
 
 function ProductsList() {
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState();
   const productsCtx = useContext(ProductsContext);
 
   useEffect(() => {
     async function getProducts() {
-      const products = await fetchProducts();
-      productsCtx.setProducts(products);
+      setIsFetching(true);
+      try {
+        const products = await fetchProducts();
+        productsCtx.setProducts(products);
+      } catch (error) {
+        setError("Could not fetch products!");
+      }
+      setIsFetching(false);
     }
 
     getProducts();
   }, []);
 
+  function errorHandler() {
+    setError(null);
+  }
   let content = <Text style={styles.noDataText}>There's no data.</Text>;
-  if (productsCtx.products.length > 0) {
+  if (error && !isFetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  } else if (isFetching) {
+    return <LoadingOverlay />;
+  } else if (productsCtx.products.length > 0) {
     content = (
       <FlatList
         data={productsCtx.products}

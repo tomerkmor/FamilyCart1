@@ -15,6 +15,7 @@ import { ThemeContext } from "../App";
 import ThemedView from "./ThemedView";
 import ProductForm from "./ProductForm";
 import ProductFormButtons from "./ProductFormButtons";
+import LoadingOverlay from "./UI/LoadingOverlay";
 
 const STARTING_PRODUCT = {
   // id - will be generated on submmition.

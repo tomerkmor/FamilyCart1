@@ -15,6 +15,7 @@ import IconButton from "./UI/IconButton";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
 import { ProductsContext } from "../store/products-context";
+import LoadingOverlay from "./UI/LoadingOverlay";
 
 function ProductFormButtons({
   isEditing,
@@ -22,17 +23,23 @@ function ProductFormButtons({
   setProductData,
   validateData,
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState();
   const navigation = useNavigation();
   const { theme } = useContext(ThemeContext);
   const productsCtx = useContext(ProductsContext);
 
   async function confirmProductHandler() {
     if (!validateData()) return;
-    console.log("from ProductFormButtons - confirmProductHandler");
 
-    const productId = await storeProduct(productData);
-    console.log("successfully created item on the database!", productData); // DOES NOT REACH
-    productsCtx.addProduct({ ...productData, id: productId });
+    setIsSubmitting(true);
+    try {
+      const productId = await storeProduct(productData);
+      productsCtx.addProduct({ ...productData, id: productId });
+    } catch (error) {
+      setError("Could not save data - please try again later.");
+      setIsSubmitting(false);
+    }
     navigation.goBack();
   }
 
@@ -43,16 +50,40 @@ function ProductFormButtons({
   async function updateProductHandler() {
     if (!validateData()) return;
 
-    productsCtx.updateProduct(productData);
-    await updateProduct(productData);
+    setIsSubmitting(true);
+    try {
+      await updateProduct(productData);
+      productsCtx.updateProduct(productData);
+    } catch (error) {
+      setError("Could not update product - please try again later.");
+      setIsSubmitting(false);
+    }
     navigation.goBack();
   }
 
-  const deleteProductHandler = () => {
-    productsCtx.deleteProduct(productData);
-    deleteProduct(productData.id);
+  async function deleteProductHandler() {
+    setIsSubmitting(true);
+    try {
+      await deleteProduct(productData.id);
+      productsCtx.deleteProduct(productData);
+    } catch (error) {
+      setError("Could not delete product - please try again later.");
+      setIsSubmitting(false);
+    }
     navigation.goBack();
-  };
+  }
+
+  function errorHandler() {
+    setError(null);
+  }
+
+  if (error && !isSubmitting) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <View style={styles.container}>
