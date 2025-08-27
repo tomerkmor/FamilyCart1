@@ -77,6 +77,7 @@ export const ProductsContext = createContext({
   // Initial values - won't be used, but are helpful with auto-completions.
   products: [],
   addProduct: ({ productName, quantity, date, emergency, description }) => {},
+  setProducts: (products) => {},
   deleteProduct: (id) => {},
   updateProduct: (
     id,
@@ -88,13 +89,16 @@ function productsReducer(state, action) {
   console.log("log from ctx: PAYLOAD = ", action.payload);
   switch (action.type) {
     case "ADD":
-      const id = new Date().toLocaleDateString() + Math.random().toString();
-      const username = "TEST";
-      const category = "ADD CATEGORY FIELD"; // FIX IT... - MAKE IT USABLE
+      const username = "TEST"; // FIX IT... - MAKE IT USABLE
+      const category = "NULL"; // FIX IT... - MAKE IT USABLE
       if (!action.payload.date) {
         action.payload.date = new Date();
       }
-      return [{ ...action.payload, id, username }, ...state];
+      return [{ ...action.payload, username, category }, ...state];
+    case "SET":
+      // in the future - filter by filter...
+      const inverted = action.payload.reverse();
+      return inverted;
     case "UPDATE":
       console.log("payload:", action.payload);
       const updatableProductIndex = state.findIndex(
@@ -114,13 +118,17 @@ function productsReducer(state, action) {
 }
 
 function ProductsContextProvider({ children }) {
-  const [productsState, dispatch] = useReducer(productsReducer, DUMMY_DATA); //Needs another function definition.
+  const [productsState, dispatch] = useReducer(productsReducer, []); //Needs another function definition.
 
   function addProduct(productData) {
     console.log("ADDING...");
     dispatch({ type: "ADD", payload: productData });
   }
 
+  function setProducts(products) {
+    console.log("SETTING...");
+    dispatch({ type: "SET", payload: products });
+  }
   function deleteProduct(id) {
     console.log("DELETING...");
     dispatch({ type: "DELETE", payload: id });
@@ -134,6 +142,7 @@ function ProductsContextProvider({ children }) {
   const value = {
     products: productsState,
     addProduct: addProduct,
+    setProducts: setProducts,
     deleteProduct: deleteProduct,
     updateProduct: updateProduct,
   };

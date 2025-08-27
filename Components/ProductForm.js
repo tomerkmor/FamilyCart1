@@ -89,8 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 32,
-    marginVertical: 20,
+    gap: 24,
   },
   descriptionContainer: {},
   buttonsContainer: {

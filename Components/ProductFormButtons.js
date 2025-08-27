@@ -1,6 +1,12 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import {
+  deleteProduct,
+  storeProduct,
+  updateProduct,
+  updateProducts,
+} from "../util/http";
 
 import InputField from "./UI/InputField";
 import ThemedText from "./ThemedText";
@@ -19,28 +25,32 @@ function ProductFormButtons({
   const navigation = useNavigation();
   const { theme } = useContext(ThemeContext);
   const productsCtx = useContext(ProductsContext);
-  //const [productData, setProductData] = useState({});
 
-  const confirmProductHandler = () => {
+  async function confirmProductHandler() {
     if (!validateData()) return;
+    console.log("from ProductFormButtons - confirmProductHandler");
 
-    productsCtx.addProduct(productData);
+    const productId = await storeProduct(productData);
+    console.log("successfully created item on the database!", productData); // DOES NOT REACH
+    productsCtx.addProduct({ ...productData, id: productId });
     navigation.goBack();
-  };
+  }
 
   const cancelProductHandler = () => {
     navigation.goBack();
   };
 
-  const updateProductHandler = () => {
+  async function updateProductHandler() {
     if (!validateData()) return;
 
     productsCtx.updateProduct(productData);
+    await updateProduct(productData);
     navigation.goBack();
-  };
+  }
 
   const deleteProductHandler = () => {
     productsCtx.deleteProduct(productData);
+    deleteProduct(productData.id);
     navigation.goBack();
   };
 

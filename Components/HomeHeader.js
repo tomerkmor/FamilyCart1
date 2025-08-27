@@ -12,13 +12,16 @@ function HomeHeader() {
       <ThemedText>Filters</ThemedText>
       <View style={styles.filters}>
         <TouchableOpacity style={styles.filter}>
-          <ThemedText>Filter 1</ThemedText>
+          <ThemedText>תאריך</ThemedText>
         </TouchableOpacity>
         <TouchableOpacity style={styles.filter}>
-          <ThemedText>Filter 2</ThemedText>
+          <ThemedText>שם מוצר</ThemedText>
         </TouchableOpacity>
         <TouchableOpacity style={styles.filter}>
-          <ThemedText>Filter 3</ThemedText>
+          <ThemedText>שם משתמש</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.filter}>
+          <ThemedText>קטגוריה</ThemedText>
         </TouchableOpacity>
       </View>
     </View>

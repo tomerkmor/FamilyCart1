@@ -1,10 +1,20 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import Product from "./Product";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../store/products-context";
+import { fetchProducts } from "../util/http";
 
 function ProductsList() {
   const productsCtx = useContext(ProductsContext);
+
+  useEffect(() => {
+    async function getProducts() {
+      const products = await fetchProducts();
+      productsCtx.setProducts(products);
+    }
+
+    getProducts();
+  }, []);
 
   let content = <Text style={styles.noDataText}>There's no data.</Text>;
   if (productsCtx.products.length > 0) {

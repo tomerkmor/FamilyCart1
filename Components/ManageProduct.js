@@ -1,12 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { useContext, useLayoutEffect, useState } from "react";
 import { ThemeContext } from "../App";
 
-import Button from "./UI/Button";
-import ThemedText from "./ThemedText";
 import ThemedView from "./ThemedView";
-import InputField from "./UI/InputField";
-import IconButton from "./UI/IconButton";
 import ProductForm from "./ProductForm";
 import ProductFormButtons from "./ProductFormButtons";
 
@@ -27,7 +33,6 @@ function ManageProduct({ route, navigation }) {
   const [productData, setProductData] = useState(
     route.params ?? STARTING_PRODUCT
   );
-  console.log(productData);
   const isEditing = !!productData?.id;
 
   useLayoutEffect(() => {
@@ -54,11 +59,13 @@ function ManageProduct({ route, navigation }) {
       !isNaN(productData.quantity.value) &&
       Number(productData.quantity.value) > 0;
 
-    const emergencyIsValid =
-      (productData.emergency.value || "").trim().length > 0;
+    const categoryIsValid =
+      (productData.category.value || "").trim().length > 0;
 
-    if (!(productNameIsValid && quantityIsValid && emergencyIsValid)) {
-      //Alert.alert("Some data is empty.", "Please fill everything.");
+    if (!(productNameIsValid && quantityIsValid && categoryIsValid)) {
+      Alert.alert("Some data is empty.", "Please fill everything.");
+      console.log();
+      console.log(productNameIsValid, quantityIsValid, categoryIsValid);
       setProductData((currentInputs) => {
         console.log("ManageProduct: ", currentInputs);
         return {
@@ -71,9 +78,9 @@ function ManageProduct({ route, navigation }) {
             ...currentInputs.quantity,
             isValid: quantityIsValid,
           },
-          emergency: {
+          category: {
             ...currentInputs.emergency,
-            isValid: emergencyIsValid,
+            isValid: categoryIsValid,
           },
         };
       });
@@ -83,28 +90,45 @@ function ManageProduct({ route, navigation }) {
   };
 
   return (
-    <ThemedView
-      style={[styles.container, { backgroundColor: theme.headerBackground }]}
-    >
-      <ProductForm
-        isEditing={isEditing}
-        productData={productData}
-        setProductData={setProductData}
-        validateData={validateData}
-      />
-      <ProductFormButtons
-        isEditing={isEditing}
-        productData={productData}
-        setProductData={setProductData}
-        validateData={validateData}
-      />
-    </ThemedView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAvoidingView
+        style={styles.flex}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+        >
+          <ThemedView
+            style={[
+              styles.container,
+              { backgroundColor: theme.headerBackground },
+            ]}
+          >
+            <ProductForm
+              isEditing={isEditing}
+              productData={productData}
+              setProductData={setProductData}
+              validateData={validateData}
+            />
+            <ProductFormButtons
+              isEditing={isEditing}
+              productData={productData}
+              setProductData={setProductData}
+              validateData={validateData}
+            />
+          </ThemedView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
 export default ManageProduct;
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   container: {
     flex: 5,
     alignItems: "center",
