@@ -131,24 +131,8 @@ export default ManageProduct;
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   container: {
-    flex: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-  buttonsContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-
-    marginTop: 16,
-    paddingTop: 8,
-    borderTopWidth: 2,
-    borderTopColor: "red",
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
+    justifyContent: "center",
   },
 });

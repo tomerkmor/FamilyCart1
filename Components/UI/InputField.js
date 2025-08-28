@@ -10,7 +10,6 @@ function InputField({
   content: initialContent,
   field,
   setProductData,
-  keyboardType,
 }) {
   const { theme } = useContext(ThemeContext);
   const [content, setContent] = useState(initialContent || "");
@@ -18,7 +17,7 @@ function InputField({
   const [showPicker, setShowPicker] = useState(false);
 
   let themeStyles = {
-    backgroundColor: theme.headerBackground,
+    backgroundColor: theme.background,
     color: theme.text,
   };
 
@@ -101,13 +100,12 @@ export default InputField;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     gap: 12,
   },
   input: {
     fontSize: 16,
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 8,
     textAlign: "right",
   },
   textarea: {

@@ -14,7 +14,7 @@ function Button({ title, onPress, mode, style }) {
         style={[
           styles.button,
           mode === "primary" && {
-            backgroundColor: theme.tabBarActiveTintColor,
+            backgroundColor: theme.headerBackground,
           },
         ]}
       >
@@ -30,13 +30,14 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 18,
     fontWeight: "bold",
     opacity: 0.9,
     minWidth: 120,
     marginHorizontal: 12,
     borderRadius: 8,
+    marginVertical: 24,
   },
   flat: {
     backgroundColor: "transparent",

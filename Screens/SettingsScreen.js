@@ -13,8 +13,15 @@ function SettingsScreen() {
 
   return (
     <ThemedView>
-      <Header />
       <ThemedText>SettingsScreen</ThemedText>
+      <Header />
+      <ThemedText>hello Username</ThemedText>
+      <ThemedText>Change Nickname</ThemedText>
+      <ThemedText>
+        Family Button(add screen for managing the family...)
+      </ThemedText>
+      <ThemedText>Notifications</ThemedText>
+      <ThemedText>Log-out Button</ThemedText>
     </ThemedView>
   );
 }

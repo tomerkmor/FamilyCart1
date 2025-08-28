@@ -16,11 +16,12 @@ import ManageProduct from "./Components/ManageProduct";
 import { Themes } from "./constants/styles";
 import IconButton from "./Components/UI/IconButton";
 import ProductsContextProvider from "./store/products-context";
+import AuthScreen from "./Screens/AuthScreen";
 
 export const ThemeContext = createContext();
 
 function ThemeProvider({ children }) {
-  const [themeName, setThemeName] = useState("dark");
+  const [themeName, setThemeName] = useState("Pinky");
 
   const setThemeByName = (name) => {
     setThemeName(name);
@@ -92,7 +93,8 @@ function AppOverviewTabs() {
           ),
         }}
       />
-      <BottomTabs.Screen
+
+      {/*<BottomTabs.Screen
         name="MyList"
         component={MyListScreen}
         options={{
@@ -102,13 +104,24 @@ function AppOverviewTabs() {
             <Ionicons name="list-outline" color={color} size={size} />
           ),
         }}
-      />
+      />*/}
       <BottomTabs.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
           title: "הגדרות",
           tabBarLabel: "הגדרות",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTabs.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={{
+          title: "התחברות",
+          tabBarLabel: "התחברות",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" color={color} size={size} />
           ),

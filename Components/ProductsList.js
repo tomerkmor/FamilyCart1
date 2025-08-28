@@ -29,6 +29,7 @@ function ProductsList() {
   function errorHandler() {
     setError(null);
   }
+
   let content = <Text style={styles.noDataText}>There's no data.</Text>;
   if (error && !isFetching) {
     return <ErrorOverlay message={error} onConfirm={errorHandler} />;
