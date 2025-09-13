@@ -1,16 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import Header from "../Components/Header";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
 
 import ThemedView from "../Components/ThemedView";
 import ThemedText from "../Components/ThemedText";
+import { AuthContext } from "../store/auth-context";
 
 function SettingsScreen() {
   const navigation = useNavigation();
   const { theme, toggleTheme, themeName } = useContext(ThemeContext);
-
+  const authCtx = useContext(AuthContext);
+  const logoutHandler = () => {
+    authCtx.logout();
+  };
   return (
     <ThemedView>
       <ThemedText>SettingsScreen</ThemedText>
@@ -21,7 +25,7 @@ function SettingsScreen() {
         Family Button(add screen for managing the family...)
       </ThemedText>
       <ThemedText>Notifications</ThemedText>
-      <ThemedText>Log-out Button</ThemedText>
+      <Button onPress={logoutHandler} title="Log-out Button"></Button>
     </ThemedView>
   );
 }

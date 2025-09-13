@@ -5,7 +5,7 @@ import { ThemeContext } from "../App";
 function ThemedText({ children, style }) {
   const { theme } = useContext(ThemeContext);
   return (
-    <Text style={[styles.container, style, { color: theme.text }]}>
+    <Text style={[styles.container, { color: theme.text }, style]}>
       {children}
     </Text>
   );

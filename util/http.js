@@ -42,3 +42,4 @@ export async function updateProduct(productData) {
 export async function deleteProduct(id) {
   return axios.delete(`${BACKEND_URL}/products/${id}.json`);
 }
+

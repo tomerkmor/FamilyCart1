@@ -110,7 +110,7 @@ function ProductFormButtons({
         {isEditing && (
           <IconButton
             icon="trash"
-            color="red"
+            color={theme.error}
             title="מחק"
             onPress={deleteProductHandler}
             size={36}

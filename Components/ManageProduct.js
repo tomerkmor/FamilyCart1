@@ -65,8 +65,6 @@ function ManageProduct({ route, navigation }) {
 
     if (!(productNameIsValid && quantityIsValid && categoryIsValid)) {
       Alert.alert("Some data is empty.", "Please fill everything.");
-      console.log();
-      console.log(productNameIsValid, quantityIsValid, categoryIsValid);
       setProductData((currentInputs) => {
         console.log("ManageProduct: ", currentInputs);
         return {
@@ -91,47 +89,28 @@ function ManageProduct({ route, navigation }) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <ScrollView
-          contentContainerStyle={styles.container}
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-        >
-          <ThemedView
-            style={[
-              styles.container,
-              { backgroundColor: theme.headerBackground },
-            ]}
-          >
-            <ProductForm
-              isEditing={isEditing}
-              productData={productData}
-              setProductData={setProductData}
-              validateData={validateData}
-            />
-            <ProductFormButtons
-              isEditing={isEditing}
-              productData={productData}
-              setProductData={setProductData}
-              validateData={validateData}
-            />
-          </ThemedView>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    <ThemedView style={styles.container}>
+      <ProductForm
+        isEditing={isEditing}
+        productData={productData}
+        setProductData={setProductData}
+        validateData={validateData}
+      />
+      <ProductFormButtons
+        isEditing={isEditing}
+        productData={productData}
+        setProductData={setProductData}
+        validateData={validateData}
+      />
+    </ThemedView>
   );
 }
 
 export default ManageProduct;
 
 const styles = StyleSheet.create({
-  flex: { flex: 1 },
   container: {
-    flex: 1,
+    flex: 3,
     alignItems: "center",
     justifyContent: "center",
   },

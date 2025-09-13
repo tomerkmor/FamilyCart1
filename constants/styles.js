@@ -28,9 +28,9 @@ export const Themes = {
     headerBackground: "#c30b64",
     headerTintColor: "#fff",
     background: "#f9beda",
-    text: "#f9beda",
+    text: "#fff",
     statusBarStyle: "light",
-    tabBarActiveTintColor: "#fff",
+    tabBarActiveTintColor: "#333333",
     tabBarBackground: "#c30b64",
     accent: "#333333",
     error: "#f37c13",
@@ -43,7 +43,8 @@ export const Themes = {
     statusBarStyle: "dark",
     tabBarActiveTintColor: "#007aff", // iOS blue
     tabBarBackground: "#ffffff",
-    accent: "#ffffff",
+    accent: "#e0e0e0",
+    error: "red",
   },
   Dark: {
     headerBackground: "#1e1e1e",
@@ -54,5 +55,6 @@ export const Themes = {
     tabBarActiveTintColor: "#f7bc0c", // warm yellow highlight
     tabBarBackground: "#1e1e1e",
     accent: "#1e1e1e",
+    error: "red",
   },
 };

@@ -11,12 +11,15 @@ import HomeScreen from "./Screens/HomeScreen";
 import RecipesScreen from "./Screens/RecipesScreen";
 import MyListScreen from "./Screens/MyListScreen";
 import SettingsScreen from "./Screens/SettingsScreen";
+
+import LoginScreen from "./Screens/LoginScreen";
+import SignupScreen from "./Screens/SignupScreen";
 import ManageProduct from "./Components/ManageProduct";
 
 import { Themes } from "./constants/styles";
 import IconButton from "./Components/UI/IconButton";
 import ProductsContextProvider from "./store/products-context";
-import AuthScreen from "./Screens/AuthScreen";
+import AuthContextProvider, { AuthContext } from "./store/auth-context";
 
 export const ThemeContext = createContext();
 
@@ -44,7 +47,105 @@ const Stack = createNativeStackNavigator();
 // Tabs Navigation
 const BottomTabs = createBottomTabNavigator();
 
-function AppOverviewTabs() {
+export default function App() {
+  return (
+    <AuthContextProvider>
+      <ThemeProvider>
+        <ProductsContextProvider>
+          <ThemedApp />
+        </ProductsContextProvider>
+      </ThemeProvider>
+    </AuthContextProvider>
+  );
+}
+
+function ThemedApp() {
+  const { theme, toggleTheme, themeName } = useContext(ThemeContext);
+  return (
+    <>
+      <StatusBar style={theme.statusBarStyle} />
+      <Navigation />
+    </>
+  );
+}
+
+function Navigation() {
+  const authCtx = useContext(AuthContext);
+
+  return (
+    <NavigationContainer>
+      {!authCtx.isAuthenticated && <AuthStack />}
+      {authCtx.isAuthenticated && <AuthenticatedStack />}
+    </NavigationContainer>
+  );
+}
+
+function AuthStack() {
+  const { theme, toggleTheme, themeName } = useContext(ThemeContext);
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          title: "התחברות",
+          headerStyle: {
+            backgroundColor: theme.headerBackground,
+          },
+          headerTintColor: theme.headerTintColor,
+          tabBarStyle: { backgroundColor: theme.tabBarBackground },
+          tabBarActiveTintColor: theme.tabBarActiveTintColor,
+          tabBarInactiveTintColor: theme.text,
+          headerTitleAlign: "center",
+          contentStyle: { backgroundColor: theme.background },
+        }}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{
+          title: "הרשמה",
+          headerStyle: {
+            backgroundColor: theme.headerBackground,
+          },
+          headerTintColor: theme.headerTintColor,
+          tabBarStyle: { backgroundColor: theme.tabBarBackground },
+          tabBarActiveTintColor: theme.tabBarActiveTintColor,
+          tabBarInactiveTintColor: theme.text,
+          headerTitleAlign: "center",
+          contentStyle: { backgroundColor: theme.background },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function AuthenticatedStack() {
+  const { theme } = useContext(ThemeContext);
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Tabs"
+        component={AuthenticatedTabs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ManageProduct"
+        component={ManageProduct}
+        options={{
+          title: "ניהול מוצר",
+          presentation: "modal",
+          headerStyle: {
+            backgroundColor: theme.headerBackground,
+          },
+          headerTintColor: theme.headerTintColor,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+function AuthenticatedTabs() {
   const navigation = useNavigation();
   const { theme, toggleTheme, themeName } = useContext(ThemeContext);
   return (
@@ -116,55 +217,7 @@ function AppOverviewTabs() {
           ),
         }}
       />
-      <BottomTabs.Screen
-        name="Auth"
-        component={AuthScreen}
-        options={{
-          title: "התחברות",
-          tabBarLabel: "התחברות",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" color={color} size={size} />
-          ),
-        }}
-      />
     </BottomTabs.Navigator>
-  );
-}
-
-export default function App() {
-  return (
-    <ThemeProvider>
-      <ProductsContextProvider>
-        <ThemedApp />
-      </ProductsContextProvider>
-    </ThemeProvider>
-  );
-}
-
-function ThemedApp() {
-  const { theme, toggleTheme, themeName } = useContext(ThemeContext);
-  return (
-    <>
-      <StatusBar style={theme.statusBarStyle} />
-      <ThemeProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="HomePage"
-              component={AppOverviewTabs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ManageProduct"
-              component={ManageProduct}
-              options={{
-                presentation: "modal",
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ThemeProvider>
-    </>
   );
 }
 

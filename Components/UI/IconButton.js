@@ -15,7 +15,9 @@ function IconButton({ icon, size, color, onPress, style, title }) {
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
     >
       <View style={[styles.buttonContainer, style]}>
-        <ThemedText style={styles.text}>{title}</ThemedText>
+        <ThemedText style={[styles.text, { color: theme.text }]}>
+          {title}
+        </ThemedText>
         <Ionicons name={icon} color={color} size={size} />
       </View>
     </Pressable>

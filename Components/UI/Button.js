@@ -15,10 +15,17 @@ function Button({ title, onPress, mode, style }) {
           styles.button,
           mode === "primary" && {
             backgroundColor: theme.headerBackground,
+            marginTop: 36,
+            marginBottom: 12,
           },
         ]}
       >
-        <ThemedText style={[mode === "primary" ? styles.primary : styles.flat]}>
+        <ThemedText
+          style={[
+            mode === "primary" ? styles.primary : styles.flat,
+            { color: theme.headerTintColor },
+          ]}
+        >
           {title}
         </ThemedText>
       </View>
@@ -37,12 +44,12 @@ const styles = StyleSheet.create({
     minWidth: 120,
     marginHorizontal: 12,
     borderRadius: 8,
-    marginVertical: 24,
   },
   flat: {
     backgroundColor: "transparent",
-    fontSize: 18,
+    fontSize: 14,
     textAlign: "center",
+    marginVertical: 0,
   },
   primary: {
     fontSize: 24,

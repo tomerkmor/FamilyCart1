@@ -1,14 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 import InputField from "./UI/InputField";
 import ThemedText from "./ThemedText";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../App";
 
 function ProductForm({ productData, setProductData, validateData }) {
+  const { theme } = useContext(ThemeContext);
   const [formIsInvalid, setFormIsInvalid] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <ThemedText style={styles.title}>המוצר שלך</ThemedText>
+    <View style={[styles.container, { backgroundColor: theme.accent }]}>
+      <ThemedText style={[styles.title, { color: theme.headerTintColor }]}>
+        המוצר שלך
+      </ThemedText>
 
       <View style={styles.rowContainer}>
         <InputField
@@ -16,14 +20,14 @@ function ProductForm({ productData, setProductData, validateData }) {
           type="number"
           content={productData.quantity}
           field="quantity"
-          setProductData={setProductData}
+          setData={setProductData}
         />
         <InputField
           title="שם הפריט"
           type="text"
           content={productData.product}
           field="product"
-          setProductData={setProductData}
+          setData={setProductData}
         />
       </View>
 
@@ -33,24 +37,26 @@ function ProductForm({ productData, setProductData, validateData }) {
           type="text"
           content={productData.category}
           field="category"
-          setProductData={setProductData}
+          setData={setProductData}
         />
         <InputField
           title="תאריך"
           type="date"
           content={productData.date}
           field="date"
-          setProductData={setProductData}
+          setData={setProductData}
         />
       </View>
 
-      <InputField
-        title="פירוט"
-        type="textarea"
-        content={productData.description}
-        field="description"
-        setProductData={setProductData}
-      />
+      <View style={styles.rowContainer}>
+        <InputField
+          title="פירוט"
+          type="textarea"
+          content={productData.description}
+          field="description"
+          setData={setProductData}
+        />
+      </View>
 
       {formIsInvalid && (
         <Text style={styles.errorMessage}>
@@ -64,11 +70,14 @@ function ProductForm({ productData, setProductData, validateData }) {
 export default ProductForm;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     alignItems: "stretch",
     marginHorizontal: 32,
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 10,
+    padding: 22,
+    paddingBottom: 40,
+    borderRadius: 12,
   },
   title: {
     textAlign: "center",
